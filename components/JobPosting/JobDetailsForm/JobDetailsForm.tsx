@@ -1,6 +1,7 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef, useMemo } from "react"
+import JoditEditor, { Jodit } from 'jodit-react';
 
 export default function Component() {
   const [activeStep, setActiveStep] = useState(1)
@@ -10,7 +11,20 @@ export default function Component() {
   const [selectedProficiency, setSelectedProficiency] = useState("");
   const [selectedLevel, setSelectedLevel] = useState("");
   const [selectedExperience, setSelectedExperience] = useState("");
+  const [content, setContent] = useState('');
   const formRef = useRef<HTMLDivElement>(null)
+  const editor = useRef(null);
+
+
+  const config = useMemo(() => ({
+      readonly: false,
+      buttons: [
+        'bold', 'italic', 'underline', 'strikethrough', 'list'
+      ],
+      placeholder: 'Enter the job description, including the main responsibilities and the task of the employee...'
+  }), []);
+
+
 
   const steps = [
     { id: 1, name: "Job Details" },
@@ -77,7 +91,6 @@ export default function Component() {
       }
     }
   }, [])
-
 
   return (
       <div className="flex flex-col items-start justify-start p-6 bg-[#FAF9FB] max-w-screen max-h-screen w-full h-full min-h-screen">
@@ -636,7 +649,208 @@ export default function Component() {
                                     />
                               </div>
                               <hr className="w-[444px] h-[1.5px] border-gray-300 mt-12 mb-12"/>
+
+                              {/* {Job Description - 1} */}
+                              <div className="flex flex-col items-start">
+                                <h3 className="font-inter text-[1.2em] font-bold leading-[2.204375em] tracking-[-0.0336em] text-left text-[#000000]">Job Description</h3>
+                                <p className="font-inter text-[0.87em] font-medium leading-[1.05875em] text-left text-[#626262]">Describe the responsibilities of this job and other specific requirements here</p>
+                                <div className="mt-5 flex flex-col w-[90%]">
+                                  <label className="font-inter text-[1em] font-medium leading-[1.215em] text-left mb-4">
+                                    Job description/additional requirements 
+                                  <span className="font-inter text-[16.08px] font-medium leading-[19.46px] text-left text-[#FF0000]"> *</span>
+                                  </label>
+                                  <JoditEditor
+                                    ref={editor}
+                                    value={content}
+                                    config={config}
+                                    // tabIndex={1} // tabIndex of textarea
+                                    onBlur={newContent => setContent(newContent)} // preferred to use only this option to update the content for performance reasons
+                                    onChange={newContent => {}}
+                                  />
+                                </div>
+                              </div>
                           </section>
+                           
+                           {/* Interviewr Information */}
+                            
+                           <section id = 'interviewer-information'>
+                              <div className="flex flex-col items-start mt-16">
+                                  <h3 className="font-inter text-[1.2em] font-bold leading-[2.204375em] tracking-[-0.0336em] text-left text-[#000000]">Interview methods and address</h3>
+                                  <p className="font-inter text-[0.87em] font-medium leading-[1.05875em] text-left text-[#626262]"> let's let candidate know how interview will be conducted for this job</p>    
+                              </div>
+                              <div className="mt-8">
+                              <label className="block font-inter text-[1em] font-medium leading-[1.215em] text-left mb-2">Format of Interview <span className="text-[#FF0000]"> *</span></label>
+                                    <div className="flex flex-col mb-4">
+                                        <label className="flex items-center mb-2 font-inter text-[0.9em] font-medium leading-[1em] text-left mt-2">
+                                        <input
+                                          type="radio"
+                                          name="interview_format"
+                                          value="In Person"
+                                          className="mr-2"
+                                          style={{ accentColor: 'black' }}
+                                        />
+                                        In Person/Walk-In Interview
+                                        </label>
+                                      <label className="flex items-center mb-2 font-inter text-[0.9em] font-medium leading-[1em] text-left mt-2">
+                                        <input
+                                          type="radio"
+                                          name="interview_format"
+                                          value="Telephonic"
+                                          className="mr-2"
+                                          defaultChecked
+                                          style={{ accentColor: 'black' }}
+                                        />
+                                        Telephonic/Online Interview
+                                      </label>
+                                    </div>
+
+                                    <label className="block font-inter text-[1em] font-medium leading-[1.215em] text-left mb-4">Company address <span className="text-[#FF0000]"> *</span></label>
+                                    <input
+                                        type="text"
+                                        placeholder="Company Name"
+                                        className="font-inter p-4 bg-transparent flex-grow w-[391.61px] h-[45.03px] border-[0.8px] border-[#9A9A9A] rounded-[7.24px]"
+                                    />
+
+                                    <hr className="w-[444px] h-[1.5px] border-gray-300 mt-12 mb-10"/>
+
+                                    <h2 className="font-inter text-[1.375em] font-semibold leading-[2.20587 em] tracking-[-0.0336em] text-left mb-6">Communication Preferences</h2>
+                                    <p className="font-inter text-[1em] font-medium leading-[1.215em] text-left text-dark mb-4">Do you want candidates to contact you via call, email, or WhatsApp after applying?<span className="text-[#FF0000]"> *</span></p>
+                                    <div className="flex flex-col mb-4">
+                                      <label className="flex items-center mb-2 font-inter text-[0.9em] font-medium leading-[1em] text-left mt-2">
+                                        <input
+                                          type="radio"
+                                          name="contact_preference"
+                                          value="Yes"
+                                          className="mr-2"
+                                          style={{ accentColor: 'black' }}
+                                        />
+                                        Yes
+                                      </label>
+                                      <label className="flex items-center mb-2 font-inter text-[0.9em] font-medium leading-[1em] text-left mt-2">
+                                        <input
+                                          type="radio"
+                                          name="contact_preference"
+                                          value="No"
+                                          className="mr-2"
+                                          defaultChecked
+                                          style={{ accentColor: 'black' }}
+                                        />
+                                        No, I Will Contact Candidate First
+                                      </label>
+                                    </div>
+                                    {/* <div className="flex justify-between mt-6">
+                                      <button
+                                        className="bg-gray-300 text-black px-6 py-2 rounded-md hover:bg-gray-400"
+                                        onClick={() => alert('Back button clicked')}
+                                      >
+                                        Back
+                                      </button>
+                                      <button
+                                        className="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600"
+                                      >
+                                        Continue
+                                      </button>
+                                    </div> */}
+                              </div>
+                           </section>
+                           
+                           {/* Job Preview */}
+                           <section id = 'job-preview'>
+                                <div className="flex items-center mt-5">
+                                  <img src="images/job-bag.png" className="w-[2 em] h-[2 em] mr-6" />
+                                  <h1 className="font-inter text-[1.6em] font-bold leading-[2.633125em] tracking-[-0.0401em] text-left mt-2">Jobs</h1>
+                                </div>
+                                <hr className="w-[444px] h-[1.5px] border-gray-300 mt-2 mb-4"/>
+                                
+                                <div className="space-y-2 w-[40%]">
+                                  <div className="flex justify-between space-y-3">
+                                    <span className="text-[#4E4E4E] font-inter text-[0.84375em] font-medium leading-[1.1em]">Company Name</span>
+                                    <span className="text-[#4E4E4E] font-inter text-[0.84375em] font-medium leading-[1.1em]">Internlink</span>
+                                  </div>
+                                  <div className="flex justify-between space-y-3">
+                                    <span className="text-[#4E4E4E] font-inter text-[0.84375em] font-medium leading-[1.1em]">Job Title</span>
+                                    <span className="text-[#4E4E4E] font-inter text-[0.84375em] font-medium leading-[1.1em]">UI UX Design Designer</span>
+                                  </div>
+                                  <div className="flex justify-between space-y-3">
+                                    <span className="text-[#4E4E4E] font-inter text-[0.84375em] font-medium leading-[1.1em]">Job Role/Category</span>
+                                    <span className="text-[#4E4E4E] font-inter text-[0.84375em] font-medium leading-[1.1em]">UI UX Design</span>
+                                  </div>
+                                  <div className="flex justify-between space-y-3">
+                                    <span className="text-[#4E4E4E] font-inter text-[0.84375em] font-medium leading-[1.1em]">Job Type</span>
+                                    <span className="text-[#4E4E4E] font-inter text-[0.84375em] font-medium leading-[1.1em]">Full Time</span>
+                                  </div>
+                                  <div className="flex justify-between space-y-3">
+                                    <span className="text-[#4E4E4E] font-inter text-[0.84375em] font-medium leading-[1.1em]">Work Type</span>
+                                    <span className="text-[#4E4E4E] font-inter text-[0.84375em] font-medium leading-[1.1em]">Work From Home</span>
+                                  </div>
+                                  <div className="flex justify-between space-y-3">
+                                    <span className="text-[#4E4E4E] font-inter text-[0.84375em] font-medium leading-[1.1em]">Job City</span>
+                                    <span className="text-[#4E4E4E] font-inter text-[0.84375em] font-medium leading-[1.1em]">Mumbai</span>
+                                  </div>
+                                  <div className="flex justify-between space-y-3">
+                                    <span className="text-[#4E4E4E] font-inter text-[0.84375em] font-medium leading-[1.1em]">Monthly Salary | Pay Type</span>
+                                    <span className="text-[#4E4E4E] font-inter text-[0.84375em] font-medium leading-[1.1em]">₹2000 Per Month</span>
+                                  </div>
+                                  <div className="flex justify-between space-y-3">
+                                    <span className="text-[#4E4E4E] font-inter text-[0.84375em] font-medium leading-[1.1em]">Additional Perks</span>
+                                    <span className="text-[#4E4E4E] font-inter text-[0.84375em] font-medium leading-[1.1em]">Flexible Working Hours</span>
+                                  </div>
+                                  <div className="flex justify-between space-y-3">
+                                    <span className="text-[#4E4E4E] font-inter text-[0.84375em] font-medium leading-[1.1em]">Joining Fee</span>
+                                    <span className="text-[#4E4E4E] font-inter text-[0.84375em] font-medium leading-[1.1em]">No</span>
+                                  </div>
+                                </div>
+                           </section>
+
+                            {/* Publish Job*/}
+                            <section id = 'publish-job'>
+                                <div className="flex item-center mt-6">
+                                  <img src="images/community.png" alt="Requirements Icon" className="w-[2.625em] h-[2.625em] mr-4" />
+                                  <h2 className="flex items-center text-[#000000] font-Inter text-[1.34375em] font-semibold leading-[2.332em] tracking-[-0.040125em] text-left">
+                                    Candidate Requirements
+                                  </h2>
+                                </div>
+                                <hr className="w-[444px] h-[1.5px] border-gray-300 mt-2 mb-4"/>
+                                <div className="space-y-2 w-[40%]">
+                                  <div className="flex justify-between space-y-3">
+                                    <span className="text-[#4E4E4E] font-inter text-[0.84375em] font-medium leading-[1.1em]">Minimum Education</span>
+                                    <span className="text-[#4E4E4E] font-inter text-[0.84375em] font-medium leading-[1.1em]">Graduate </span>
+                                  </div>
+                                  <div className="flex justify-between space-y-3">
+                                    <span className="text-[#4E4E4E] font-inter text-[0.84375em] font-medium leading-[1.1em]">Experience Required</span>
+                                    <span className="text-[#4E4E4E] font-inter text-[0.84375em] font-medium leading-[1.1em]">Freshers Only</span>
+                                  </div>
+                                  <div className="flex justify-between space-y-3">
+                                    <span className="text-[#4E4E4E] font-inter text-[0.84375em] font-medium leading-[1.1em]">English</span>
+                                    <span className="text-[#4E4E4E] font-inter text-[0.84375em] font-medium leading-[1.1em]"> Fluent English</span>
+                                  </div>
+                                </div>
+                                <div className="flex item-center mt-6">
+                                  <img src="images/interview.png" alt="Requirements Icon" className="w-[2.625em] h-[2.625em] mr-4" />
+                                  <h2 className="flex items-center text-[#000000] font-Inter text-[1.34375em] font-semibold leading-[2.332em] tracking-[-0.040125em] text-left">
+                                    Interview Information
+                                  </h2>
+                                </div>
+                                <hr className="w-[444px] h-[1.5px] border-gray-300 mt-2 mb-4"/>
+                                <div className="space-y-2 w-[40%] mb-0">
+                                  <div className="flex justify-between space-y-3">
+                                    <span className="text-[#4E4E4E] font-inter text-[0.84375em] font-medium leading-[1.1em]">Type of Interview</span>
+                                    <span className="text-[#4E4E4E] font-inter text-[0.84375em] font-medium leading-[1.1em]"> Telephonic/Online </span>
+                                  </div>
+                                  <div className="flex justify-between space-y-3">
+                                    <span className="text-[#4E4E4E] font-inter text-[0.84375em] font-medium leading-[1.1em]">Company Address</span>
+                                    <span className="text-[#4E4E4E] font-inter text-[0.84375em] font-medium leading-[1.1em]">Mumbai</span>
+                                  </div>
+                                  <div className="flex justify-between space-y-3">
+                                    <span className="text-[#4E4E4E] font-inter text-[0.84375em] font-medium leading-[1.1em]">HR Details</span>
+                                    <span className="text-[#4E4E4E] font-inter text-[0.84375em] font-medium leading-[1.1em]">Gauransh, 8451922278, dixitgauransh41@gmail.com</span>
+                                  </div>
+                                  <div className="flex justify-between space-y-3">
+                                    <span className="text-[#4E4E4E] font-inter text-[0.84375em] font-medium leading-[1.1em]">Can Candidates Contact</span>
+                                    <span className="text-[#4E4E4E] font-inter text-[0.84375em] font-medium leading-[1.1em]">No</span>
+                                  </div>
+                                </div>
+                            </section>
 
                         </div>
                   </div>
