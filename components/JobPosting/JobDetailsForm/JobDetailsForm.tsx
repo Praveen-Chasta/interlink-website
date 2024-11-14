@@ -19,7 +19,8 @@ export default function Component() {
   const config = useMemo(() => ({
       readonly: false,
       buttons: [
-        'bold', 'italic', 'underline', 'strikethrough', 'list'
+        'bold', 'italic', 'underline', 'strikethrough'
+      , 'ul'
       ],
       placeholder: 'Enter the job description, including the main responsibilities and the task of the employee...'
   }), []);
