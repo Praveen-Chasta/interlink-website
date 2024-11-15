@@ -10,6 +10,10 @@ export default function Job() {
     router.push('/job-details'); 
   };
 
+  const handleViewApplicants = () => {
+    router.push('/applications'); 
+  };
+
   return (
     <div className="flex h-screen w-screen bg-[#FAF9FB]">
       <Sidebar />
@@ -55,9 +59,10 @@ export default function Job() {
                     </p>
                 </div>
                 <button
+                    onClick={handleViewApplicants}
                     className="text-[#565656] py-2 px-4 rounded-lg transition duration-200 w-[168px] h-[55px] border border-[#565656]"
                     >
-                    View Applicant
+                    View Applicants
                 </button>
             </div>
         </div>
